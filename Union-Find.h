@@ -10,8 +10,7 @@ public:
         parent = new int[N];
         size = new int[N];
         for (int i = 0; i<N; i++) {
-            parent[i] = i;
-            size[i] = 1;
+            parent[i] = i, size[i] = 1;
         }
     }
     ~UnionFind() {
@@ -20,7 +19,7 @@ public:
     }
     int find(int p) {
         int root = p;
-        while (root != parent[root])    root = parent[root];
+        while (root != parent[root]) root = parent[root];
         while (p != root) {
             int newp = parent[p];
             parent[p] = root;
@@ -28,11 +27,11 @@ public:
         }
         return root;
     }
-    void merge(int x, int y) {
+    void merge(int x, int y){
         int i = find(x);
         int j = find(y);
         if (i == j) return;
-        if (size[i] < size[j]) {
+        if (size[i] < size[j]){
             parent[i] = j;
             size[j] += size[i];
         }
@@ -42,7 +41,11 @@ public:
         }
         counter--;
     }
-    bool connected(int x, int y) { return find(x) == find(y); }
-    int count() { return counter; }
+    bool connected(int x, int y){
+        return find(x) == find(y);
+    }
+    int count(){
+        return counter;
+    }
 };
 #endif //MEVNI3WET2_UNION_FIND_H
