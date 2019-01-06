@@ -9,7 +9,6 @@ namespace Wet1{
     class Wet1Exeption {};
 
     namespace AVL {
-
         class AVLexeption : public  Wet1Exeption{};
         class IllegalArgument : public AVLexeption{};
         class KeyAlreadyExist : public AVLexeption{};
