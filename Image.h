@@ -5,12 +5,7 @@
 #include "Labels.h"
 #include "AVLtree.h"
 #include "MaxHeap.h"
-typedef enum {
-    SUCCESS = 0,
-    FAILURE = -1,
-    ALLOCATION_ERROR = -2,
-    INVALID_INPUT = -3
-} StatusTypeT;
+#include "library.h"
 
 struct Labels {
     MaxHeap<LabelByScore> labelsByScore;
@@ -25,8 +20,8 @@ public:
         labels = new Labels[pixels];
     };
     ~Image();
-    StatusTypeT setLabelScore(int pixel,int label,int score);
-    StatusTypeT resetLabelScore(int pixel,int label);
+    StatusType setLabelScore(int pixel,int label,int score);
+    StatusType resetLabelScore(int pixel,int label);
 };
 
 
