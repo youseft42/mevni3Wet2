@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_Maximum_required(VERSION 3.9)
 project(mevni3Wet2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(mevni3Wet2 main.cpp Image.cpp Image.h Labels.cpp Labels.h Union-Find.h AVLtree.h exceptions.h)
+add_executable(mevni3Wet2 main.cpp Image.cpp Image.h Labels.cpp Labels.h Union-Find.h AVLtree.h exceptions.h MaxHeap.h)
