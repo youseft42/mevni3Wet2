@@ -3,4 +3,4 @@ project(mevni3Wet2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(mevni3Wet2 main.cpp)
+add_executable(mevni3Wet2 main.cpp Image.cpp Image.h Labels.cpp Labels.h Union-Find.h)
