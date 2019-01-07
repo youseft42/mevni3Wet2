@@ -16,6 +16,7 @@ StatusType Ds::AddImage(int imageID) {
 StatusType Ds::DeleteImage(int imageID) {
     if (!(allImages.contains(imageID))) return FAILURE;
     try {
+        allImages.GetData(imageID).destroyImage();
         allImages.Delete(imageID);
     }catch(std::bad_alloc&){
         return ALLOCATION_ERROR;

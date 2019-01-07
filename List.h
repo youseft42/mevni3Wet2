@@ -41,7 +41,7 @@ public:
     void DoSomething(F& f){
         ListNode<T,K>* tmp = head;
         while (tmp){
-            f(&tmp->data);
+            f(tmp->data);
             tmp = tmp->nextNode;
         }
     }

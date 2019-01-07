@@ -9,7 +9,17 @@ class Ds{
     ChainHashing<Image, int> allImages;
 public:
     Ds(int pixels);
-    ~Ds() = default;
+    ~Ds(){
+        class Distroy{
+        public:
+            void operator()(Image& image){
+                image.destroyImage();
+            }
+
+        };
+        Distroy distroy;
+        allImages.DoSomething(distroy);
+    };
     StatusType AddImage(int imageID);
     StatusType DeleteImage(int imageID);
     StatusType SetLabelScore(int imageID, int pixel, int label, int score);
