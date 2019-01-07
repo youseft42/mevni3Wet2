@@ -21,6 +21,8 @@ StatusType Image::setLabelScore(int pixel,int label,int score)
 
 StatusType Image::resetLabelScore(int pixel,int label)
 {
+    if(!labels[pixels.find(pixel)].labelsBylabel.contains(label))
+        return FAILURE;
     int index = labels[pixels.find(pixel)].labelsBylabel.Get(label).getIndex();
     int maxScore = labels[pixels.find(pixel)].labelsByScore.FindMax().getScore();
     LabelByScore labelByScore(label,maxScore+1);
@@ -30,9 +32,15 @@ StatusType Image::resetLabelScore(int pixel,int label)
     return SUCCESS;
 }
 StatusType Image::highestScoredLabel(int pixel, int *label){
+    if(!labels[pixels.find(pixel)].labelsByScore.GetSize())
+        return FAILURE;
     *label = labels[pixels.find(pixel)].labelsByScore.FindMax().getLabel();
+    return SUCCESS;
 }
 StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
+        int superPixel1=pixels.find(pixel1);
+        int superPixel2=pixels.find(pixel2);
+        if(superPixel1==superPixel2) return FAILURE;
         class CreateHeap{
         public:
             int index;
@@ -54,8 +62,7 @@ StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
                 return true;
             }
         };
-        int superPixel1=pixels.find(pixel1);
-        int superPixel2=pixels.find(pixel2);
+
         pixels.merge(pixel1,pixel2);
         TrueClass trueClass;
         labels[pixels.find(pixel1)].labelsBylabel.uniteTrees(&labels[superPixel1].labelsBylabel,&labels[superPixel2].labelsBylabel,trueClass);
