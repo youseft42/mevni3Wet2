@@ -24,37 +24,36 @@ public:
     ~Node() = default;
 };
 
-template <class T, class K>
+template <class T, class K,class Function>
 class PutInTree {
+    Function function;
     int index;
     T* arr;
 public:
-    PutInTree(T* arr) : index(0), arr(arr) {};
+    PutInTree( Function filter,T* arr) : function(filter) ,index(0), arr(arr) {};
     ~PutInTree() = default;
     void operator() (T& data, K& key){
         data = arr[index];
-        key = arr[index];
+        key = function(arr[index]);
         index++;
     }
 };
 
-template <class Filter, class T, class K>
+template < class T, class K>
 class PutInArray {
-    Filter filter;
     int index;
     T* arr;
 public:
-    PutInArray(Filter& filter,int size) : filter(filter), index(0) {
+    PutInArray(int size) : index(0) {
         arr = new T[size];
     }
     ~PutInArray() {
         delete[] arr;
     }
     void operator() (T& data, K& key){
-        if (filter(data)) {
             arr[index] = data;
             index++;
-        }
+
     }
     T* GetArray(){
         return arr;
@@ -169,14 +168,14 @@ public:
     }
     void EmptyTree (int size, Node<T,K>* dummy);
     void BuildAlmostComplete(int size, Node<T,K>* dummy);
-    template <class Filter>
-    void uniteTrees(AVL* tree1, AVL* tree2, Filter& f){
-        Counter<Filter, T, K> counter1(f);
+    template <class Function>
+    void uniteTrees(AVL* tree1, AVL* tree2, Function& f){
+        Counter<Function, T, K> counter1(f);
         tree1->InOrder(counter1);
-        Counter<Filter, T, K> counter2(f);
+        Counter<Function, T, K> counter2(f);
         tree2->InOrder(counter2);
-        PutInArray<Filter, T, K> putA1(f, counter1.GetCounter());
-        PutInArray<Filter, T, K> putA2(f, counter2.GetCounter());
+        PutInArray< T, K> putA1(counter1.GetCounter());
+        PutInArray<T, K> putA2(counter2.GetCounter());
         tree1->InOrder(putA1);
         tree2->InOrder(putA2);
         int newSize = counter1.GetCounter() + counter2.GetCounter();
@@ -184,7 +183,7 @@ public:
         newSize = merge1(putA1.GetArray(), counter1.GetCounter(), putA2.GetArray(), counter2.GetCounter(), merged);
         Node<T, K>* dummy = (tree1->head) ? tree1->head : (tree2->head) ? tree2->head : tree1->head;
         BuildAlmostComplete(newSize, dummy);
-        PutInTree<T, K> putIn(merged);
+        PutInTree<T, K,Function> putIn(f,merged);
         this->InOrder(putIn);
         this->size = newSize;
         delete[] merged;

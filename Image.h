@@ -7,15 +7,23 @@
 #include "MaxHeap.h"
 #include "library.h"
 
-struct Labels {
-    MaxHeap<LabelByScore> labelsByScore;
+class Labels {
+public:
+    MaxHeap<LabelByScore>* labelsByScore;
     AVL<LabelBylabel,int> labelsBylabel;
+    Labels():labelsBylabel(){
+        labelsByScore = new MaxHeap<LabelByScore>(10);
+    }
+    ~Labels(){
+        delete labelsByScore;
+    };
 };
 class Image{
     int imageId;
     UnionFind pixels;
     Labels* labels;
 public:
+    Image():labels(NULL),pixels(0),imageId(0){};
     Image(int imageId,int pixels):imageId(imageId),pixels(pixels){
         labels = new Labels[pixels];
     };

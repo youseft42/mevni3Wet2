@@ -7,6 +7,7 @@ class LabelBylabel {
     int score;
     int indexInHeap;
 public:
+    LabelBylabel():label(0),score(0){};
     LabelBylabel(int label,int score): label(label),score(score),indexInHeap(-1){};
     void updateScore(int score1){
         score=score1;
@@ -14,6 +15,9 @@ public:
     void updateIndexInHeap(int index){
         indexInHeap=index;
     };
+    int getLabel(){
+        return label;
+    }
     int getIndex(){
         return indexInHeap;
     }
@@ -34,11 +38,16 @@ public:
         score=labelBylabel.score;
         indexInHeap=labelBylabel.indexInHeap;
     }
+    LabelBylabel& operator+(const LabelBylabel& labelBylabel){
+        label=labelBylabel.label;
+        score+=labelBylabel.score;
+    }
 };
 class LabelByScore{
     int label;
     int score;
 public:
+    LabelByScore():label(0),score(0){};
     LabelByScore(int label,int score): label(label),score(score){};
     int getScore(){
         return score;

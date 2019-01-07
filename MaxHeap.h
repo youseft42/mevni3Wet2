@@ -17,6 +17,7 @@ public:
     MaxHeap(int cap);
     MaxHeap(const MaxHeap&) = delete;
     ~MaxHeap();
+
     int Parent(int i);
     int RightSon(int i);
     int LeftSon(int i);
@@ -131,7 +132,7 @@ void MaxHeap<K>::DelMax() {
         SiftDown(0);
         double check = ((double) size / (double) capacity);
         if (check <= (1 / 4)) {
-            int *tmp = new K[capacity / 2];
+            K *tmp = new K[capacity / 2];
             for (int i = 0; i < size; i++) {
                 tmp[i] = heapArr[i];
             }
