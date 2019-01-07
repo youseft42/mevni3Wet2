@@ -122,7 +122,7 @@ static void ReverseInOrderAux(Node<T,K>* root, DoSomething &doSomething){
 }
 
 template <class T>
-static void merge1(T* a, int na, T* b, int nb, T* c){
+static int merge1(T* a, int na, T* b, int nb, T* c){
     int ia, ib, ic;
     for(ia=ib=ic=0; (ia < na) && (ib < nb); ic++){
         if (a[ia] < b[ib]) {
@@ -141,6 +141,7 @@ static void merge1(T* a, int na, T* b, int nb, T* c){
     }
     for(; ia < na; ia++, ic++) c[ic] = a[ia];
     for(; ib < nb; ib++, ic++) c[ic] = b[ib];
+    return ic;
 };
 
 template <class T, class K>
@@ -180,7 +181,7 @@ public:
         tree2->InOrder(putA2);
         int newSize = counter1.GetCounter() + counter2.GetCounter();
         T* merged = new T[newSize];
-        merge1(putA1.GetArray(), counter1.GetCounter(), putA2.GetArray(), counter2.GetCounter(), merged);
+        newSize = merge1(putA1.GetArray(), counter1.GetCounter(), putA2.GetArray(), counter2.GetCounter(), merged);
         Node<T, K>* dummy = (tree1->head) ? tree1->head : (tree2->head) ? tree2->head : tree1->head;
         BuildAlmostComplete(newSize, dummy);
         PutInTree<T, K> putIn(merged);

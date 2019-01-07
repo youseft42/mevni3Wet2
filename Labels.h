@@ -43,13 +43,18 @@ public:
     int getScore(){
         return score;
     }
+    int getLabel(){
+        return label;
+    }
     bool operator==(const LabelByScore& labelByScore){
         return (label == labelByScore.label);
     }
     bool operator>(const LabelByScore& labelByScore){
-        return (score > labelByScore.score);
+        if(score == labelByScore.score) return (label > labelByScore.label);
+        return  (score > labelByScore.score);
     }
     bool operator<(const LabelByScore& labelByScore){
+        if(score == labelByScore.score) return (label < labelByScore.label);
         return (score < labelByScore.score);
     }
     LabelByScore& operator=(const LabelByScore& labelByScore){

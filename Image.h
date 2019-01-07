@@ -22,6 +22,9 @@ public:
     ~Image();
     StatusType setLabelScore(int pixel,int label,int score);
     StatusType resetLabelScore(int pixel,int label);
+    StatusType highestScoredLabel(int pixel, int *label);
+    StatusType mergeSuperPixels(int pixel1, int pixel2);
+
 };
 
 

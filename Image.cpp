@@ -29,3 +29,9 @@ StatusType Image::resetLabelScore(int pixel,int label)
     labels[pixels.find(pixel)].labelsBylabel.remove(label);
     return SUCCESS;
 }
+StatusType Image::highestScoredLabel(int pixel, int *label){
+    *label = labels[pixels.find(pixel)].labelsByScore.FindMax().getLabel();
+}
+StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
+
+}
