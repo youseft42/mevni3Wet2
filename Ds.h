@@ -6,12 +6,16 @@
 
 class Ds{
     int pixels;
-    ChainHashing allImages;
+    ChainHashing<Image, int> allImages;
 public:
     Ds(int pixels);
-    ~Ds();
-    StatusType AddImage(void *DS, int imageID);
-
+    ~Ds() = default;
+    StatusType AddImage(int imageID);
+    StatusType DeleteImage(int imageID);
+    StatusType SetLabelScore(int imageID, int pixel, int label, int score);
+    StatusType ResetLabelScore(int imageID, int pixel, int label);
+    StatusType GetHighestScoredLabel(int imageID, int pixel, int *label);
+    StatusType MergeSuperPixels(int imageID, int pixel1, int pixel2);
 };
 
 
