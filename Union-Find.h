@@ -2,7 +2,9 @@
 #define MEVNI3WET2_UNION_FIND_H
 
 class UnionFind{
-    int *parent, counter, *size;
+    int* parent;
+    int counter;
+    int* size;
 
 public:
     UnionFind(int N) {
@@ -10,7 +12,8 @@ public:
         parent = new int[N];
         size = new int[N];
         for (int i = 0; i<N; i++) {
-            parent[i] = i, size[i] = 1;
+            parent[i] = i;
+            size[i] = 1;
         }
     }
     ~UnionFind() {

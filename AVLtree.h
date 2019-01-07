@@ -188,8 +188,6 @@ public:
         this->InOrder(putIn);
         this->size = newSize;
         delete[] merged;
-        delete tree1;
-        delete tree2;
     }
 };
 

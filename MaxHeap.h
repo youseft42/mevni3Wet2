@@ -28,7 +28,6 @@ public:
     void IncreaseKey(K value, int index);
 };
 
-
 template <class K>
 static void Swap(K* a, K* b){
     K tmp = *a;
