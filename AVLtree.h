@@ -93,6 +93,7 @@ static void FixMax (Node<T,K>* root) {
             if(rightMax > root->max)
                 root->max = rightMax;
             else if(root->data > root->max) root->max = root->data;
+            if(!root->leftSon && !root->rightSon) root->max = root->data;
     }
 };
 template <class T, class K>
