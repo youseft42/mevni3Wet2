@@ -4,7 +4,6 @@
 #include "Union-Find.h"
 #include "Labels.h"
 #include "AVLtree.h"
-#include "MaxHeap.h"
 #include "library.h"
 
 class Labels {

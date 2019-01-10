@@ -3,19 +3,19 @@
 
 #include "Image.h"
 #include "ChainHashing.h"
-
+class Destroy{
+public:
+    void operator()(Image& image1){
+        image1.destroyImage();
+    }
+};
 class Ds{
     int pixels;
     ChainHashing<Image, int> allImages;
 public:
     Ds(int pixels);
     ~Ds(){
-        class Destroy{
-        public:
-            void operator()(Image& image1){
-                image1.destroyImage();
-            }
-        };
+
         Destroy destroy;
         allImages.DoSomething(destroy);
     };
