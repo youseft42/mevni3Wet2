@@ -86,10 +86,12 @@ static void FixMax (Node<T,K>* root) {
                 rightMax = root->rightSon->max;
             }
             if (leftMax > rightMax) {
-                root->max = leftMax ;
+                if(leftMax > root->max)
+                    root->max = leftMax ;
                 return;
             }
-            root->max = rightMax;
+            if(rightMax > root->max)
+                root->max = rightMax;
 
     }
 };
@@ -128,11 +130,15 @@ static void FixNewMax (Node<T,K>* root) {
             rightMax = root->rightSon->max;
         }
         if (leftMax > rightMax) {
-            root->max = leftMax ;
+            if(root->data < leftMax)
+                root->max = leftMax ;
+            else root->max=root->data;
             return;
         }
-        root->max = rightMax;
-
+        if(root->data < rightMax)
+            root->max = rightMax ;
+        else root->max=root->data;
+        return;
     }
 };
 template <class T, class K>

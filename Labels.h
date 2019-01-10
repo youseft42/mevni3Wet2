@@ -20,9 +20,11 @@ public:
         return score;
     }
     bool operator>(const LabelBylabel& labelBylabel){
+        if(score == labelBylabel.score) return (label > labelBylabel.label);
         return (score > labelBylabel.score);
     }
     bool operator<(const LabelBylabel& labelBylabel){
+        if(score == labelBylabel.score) return (label < labelBylabel.label);
         return (score < labelBylabel.score);
     }
     bool operator==(const LabelBylabel& labelBylabel){
