@@ -122,10 +122,10 @@ static void FixNewMax (Node<T,K>* root) {
         T leftMax=root->data;
         T rightMax=root->data;
         if (root->leftSon != NULL) {
-            leftMax = root->leftSon->data;
+            leftMax = root->leftSon->max;
         }
         if (root->rightSon != NULL) {
-            rightMax = root->rightSon->data;
+            rightMax = root->rightSon->max;
         }
         if (leftMax > rightMax) {
             root->max = leftMax ;
