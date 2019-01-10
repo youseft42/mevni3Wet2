@@ -11,7 +11,7 @@ public:
     int highestScoredLabel;
     AVL<LabelByScore,LabelByScore>* labelsByScore;
     AVL<LabelBylabel,int>* labelsBylabel;
-    Labels(){
+    Labels() : highestScoredLabel(0){
         labelsByScore = new AVL<LabelByScore,LabelByScore>;
         labelsBylabel = new AVL<LabelBylabel,int>;
 

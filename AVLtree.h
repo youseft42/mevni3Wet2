@@ -349,8 +349,10 @@ static Node<T,K>* FindKey (Node<T,K>* root, K key) {
 template <class T, class K>
 static Node<T,K>* FindMaxKey(Node<T,K>* root){
     Node<T,K>* tmp = root;
-    while (tmp->rightSon != NULL){
-        tmp = tmp->rightSon;
+    if (tmp != NULL) {
+        while (tmp->rightSon != NULL) {
+            tmp = tmp->rightSon;
+        }
     }
     return tmp;
 };
@@ -408,7 +410,7 @@ T& AVL<T,K>::Get(const K key) {
 
 template <class T, class K>
 K& AVL<T,K>::getMaxKey(){
-    Node<T,K>* node = FindMaxKey(head);
+    Node<T, K> *node = FindMaxKey(head);
     return node->data;
 };
 

@@ -30,8 +30,8 @@ StatusType Image::resetLabelScore(int pixel,int label)
     return SUCCESS;
 }
 StatusType Image::highestScoredLabel(int pixel, int *label){
-    int superPixel =pixels->find(pixel);
-    if(!labels[superPixel].labelsByScore->GetSize())
+    int superPixel = pixels->find(pixel);
+    if(labels[superPixel].labelsByScore->GetSize() == 0)
         return FAILURE;
     *label = labels[superPixel].highestScoredLabel;
     return SUCCESS;
@@ -62,5 +62,7 @@ StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
         labels[newSuperPixel].labelsByScore->
                 uniteTrees(labels[superPixel1].labelsByScore,
                            labels[superPixel2].labelsByScore,scoreFunction);
+        if (labels[newSuperPixel].labelsByScore->GetSize() > 0)
+            labels[newSuperPixel].highestScoredLabel = labels[newSuperPixel].labelsByScore->getMaxKey().getLabel();
         return  SUCCESS;
 }
