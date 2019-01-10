@@ -5,17 +5,12 @@ StatusType Image::setLabelScore(int pixel,int label,int score)
 {
     int superPixel = pixels->find(pixel);
     LabelBylabel labelBylabel(label,score);
-    LabelByScore labelByScore(label,score);
     if(labels[superPixel].labelsBylabel->contains(label)){
-        labels[superPixel].labelsBylabel->Get(label).updateScore(score);
-        labels[superPixel].labelsByScore->remove(labelByScore);
-        labels[superPixel].labelsByScore->Insert(labelByScore, labelByScore);
-        labels[superPixel].highestScoredLabel = labels[superPixel].labelsByScore->getMaxKey().getLabel();
+        labels[superPixel].labelsBylabel->remove(label);
+        labels[superPixel].labelsBylabel->Insert(labelBylabel,label);
         return SUCCESS;
     }
     labels[superPixel].labelsBylabel->Insert(labelBylabel,label);
-    labels[superPixel].labelsByScore->Insert(labelByScore, labelByScore);
-    labels[superPixel].highestScoredLabel = labels[superPixel].labelsByScore->getMaxKey().getLabel();
     return SUCCESS;
 }
 
@@ -24,18 +19,14 @@ StatusType Image::resetLabelScore(int pixel,int label)
     int superPixel =pixels->find(pixel);
     if(!(labels[superPixel].labelsBylabel->contains(label)))
         return FAILURE;
-    LabelByScore labelByScore(label, labels[superPixel].labelsBylabel->Get(label).getScore());
     labels[superPixel].labelsBylabel->remove(label);
-    labels[superPixel].labelsByScore->remove(labelByScore);
-    if (labels[superPixel].labelsByScore->GetSize() > 0)
-        labels[superPixel].highestScoredLabel = labels[superPixel].labelsByScore->getMaxKey().getLabel();
     return SUCCESS;
 }
 StatusType Image::highestScoredLabel(int pixel, int *label){
     int superPixel = pixels->find(pixel);
-    if(labels[superPixel].labelsByScore->GetSize() == 0)
+    if(labels[superPixel].labelsBylabel->GetSize() == 0)
         return FAILURE;
-    *label = labels[superPixel].highestScoredLabel;
+    *label = labels[superPixel].labelsBylabel->GetHeadMax().getLabel();
     return SUCCESS;
 }
 class LabelFunction{
@@ -44,10 +35,12 @@ public:
         return labelBylabel.getLabel();
     }
 };
-class ScoreFunction{
+class Compare{
 public:
-    LabelByScore& operator()(LabelByScore& labelByScore){
-        return labelByScore;
+    int operator()(LabelBylabel& labelBylabel1,LabelBylabel& labelBylabel2){
+        if(labelBylabel1.getLabel() < labelBylabel2.getLabel()) return -1;
+        if(labelBylabel1.getLabel() > labelBylabel2.getLabel()) return 1;
+        return 0;
     }
 };
 StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
@@ -57,14 +50,10 @@ StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
         pixels->merge(pixel1,pixel2);
         int newSuperPixel = pixels->find(pixel1);
         LabelFunction labelFunction;
-        ScoreFunction scoreFunction;
+        Compare compare;
         labels[newSuperPixel].labelsBylabel->
                 uniteTrees(labels[superPixel1].labelsBylabel,
-                           labels[superPixel2].labelsBylabel,labelFunction);
-        labels[newSuperPixel].labelsByScore->
-                uniteTrees(labels[superPixel1].labelsByScore,
-                           labels[superPixel2].labelsByScore,scoreFunction);
-        if (labels[newSuperPixel].labelsByScore->GetSize() > 0)
-            labels[newSuperPixel].highestScoredLabel = labels[newSuperPixel].labelsByScore->getMaxKey().getLabel();
+                           labels[superPixel2].labelsBylabel,labelFunction,compare);
+        labels[newSuperPixel].labelsBylabel->FixTreeMax();
         return  SUCCESS;
 }

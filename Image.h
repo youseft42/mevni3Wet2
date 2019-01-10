@@ -8,16 +8,12 @@
 
 class Labels {
 public:
-    int highestScoredLabel;
-    AVL<LabelByScore,LabelByScore>* labelsByScore;
     AVL<LabelBylabel,int>* labelsBylabel;
-    Labels() : highestScoredLabel(0){
-        labelsByScore = new AVL<LabelByScore,LabelByScore>;
+    Labels(){
         labelsBylabel = new AVL<LabelBylabel,int>;
 
     }
     ~Labels(){
-        delete labelsByScore;
         delete labelsBylabel;
     };
 };

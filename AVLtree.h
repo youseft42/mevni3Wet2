@@ -14,6 +14,7 @@ class Node{
 public:
     T data;
     K key;
+    T max;
     Node* rightSon;
     Node* leftSon;
     Node* parent;
@@ -73,7 +74,25 @@ public:
         return count;
     }
 };
+template <class T, class K>
+static void FixMax (Node<T,K>* root) {
+    if(root){
+            T leftMax;
+            T rightMax;
+            if (root->leftSon != NULL) {
+                leftMax = root->leftSon->max;
+            }
+            if (root->rightSon != NULL) {
+                rightMax = root->rightSon->max;
+            }
+            if (leftMax > rightMax) {
+                root->max = leftMax ;
+                return;
+            }
+            root->max = rightMax;
 
+    }
+};
 template <class T, class K>
 static void Fixheight (Node<T,K>* root) {
     if (root) {
@@ -88,10 +107,40 @@ static void Fixheight (Node<T,K>* root) {
         if (leftHeight > rightHeight) {
             root->height = leftHeight + 1;
             root->balance = leftHeight - rightHeight;
+            FixMax(root);
             return;
         }
         root->height = rightHeight + 1;
         root->balance = leftHeight - rightHeight;
+        FixMax(root);
+    }
+
+}
+template <class T, class K>
+static void FixNewMax (Node<T,K>* root) {
+    if(root){
+        T leftMax;
+        T rightMax=root->data;
+        if (root->leftSon != NULL) {
+            leftMax = root->leftSon->data;
+        }
+        if (root->rightSon != NULL) {
+            rightMax = root->rightSon->data;
+        }
+        if (leftMax > rightMax) {
+            root->max = leftMax ;
+            return;
+        }
+        root->max = rightMax;
+
+    }
+};
+template <class T, class K>
+static void FixTreeMaxAux(Node<T,K>* root){
+    if (root){
+        FixTreeMaxAux(root->leftSon);
+        FixTreeMaxAux(root->rightSon);
+        FixNewMax(root);
     }
 }
 
@@ -119,11 +168,11 @@ static void ReverseInOrderAux(Node<T,K>* root, DoSomething &doSomething){
     }
 }
 
-template <class T>
-static int merge1(T* a, int na, T* b, int nb, T* c){
+ template <class T,class Compare>
+static int merge1(T* a, int na, T* b, int nb, T* c,Compare& compare){
     int ia, ib, ic;
     for(ia=ib=ic=0; (ia < na) && (ib < nb); ic++){
-        if (a[ia] < b[ib]) {
+        if (compare(a[ia],b[ib])<0) {
             c[ic] = a[ia];
             ia++;
         }
@@ -157,10 +206,13 @@ public:
     K& getMaxKey();
     T& Get(const K key);
     Node<T,K>* GetNode(const K key);
-
+    T& GetHeadMax();
     template <class DoSomething>
     void InOrder(DoSomething& doSomething) {
         InOrderAux(head,doSomething);
+    }
+    void FixTreeMax(){
+        FixTreeMaxAux(head);
     }
     template <class DoSomething>
     void ReverseInOrder(DoSomething& doSomething ) {
@@ -168,8 +220,8 @@ public:
     }
     void EmptyTree (int size, Node<T,K>* dummy);
     void BuildAlmostComplete(int size, Node<T,K>* dummy);
-    template <class Function>
-    void uniteTrees(AVL* tree1, AVL* tree2, Function& f){
+    template <class Function,class Compare>
+    void uniteTrees(AVL* tree1, AVL* tree2, Function& f,Compare& compare){
         Counter<T, K> counter1;
         tree1->InOrder(counter1);
         Counter<T, K> counter2;
@@ -180,7 +232,7 @@ public:
         tree2->InOrder(putA2);
         int newSize = counter1.GetCounter() + counter2.GetCounter();
         T* merged = new T[newSize];
-        newSize = merge1(putA1.GetArray(), counter1.GetCounter(), putA2.GetArray(), counter2.GetCounter(), merged);
+        newSize = merge1(putA1.GetArray(), counter1.GetCounter(), putA2.GetArray(), counter2.GetCounter(), merged,compare);
         Node<T, K>* dummy = (tree1->head) ? tree1->head : (tree2->head) ? tree2->head : tree1->head;
         BuildAlmostComplete(newSize, dummy);
         PutInTree<T, K,Function> putIn(f,merged);
@@ -209,7 +261,7 @@ static void DeleteTree(Node<T,K>* head) {
 }
 
 template <class T, class K>
-Node<T,K>::Node(const T data, const K key) : data(data), key(key), rightSon(NULL), leftSon(NULL),
+Node<T,K>::Node(const T data, const K key) : data(data), key(key),max(data), rightSon(NULL), leftSon(NULL),
                                         parent(NULL),  balance(0), height(1) {}
 
 template <class T, class K>
@@ -219,6 +271,7 @@ template <class T, class K>
 AVL<T,K>::~AVL() {
     DeleteTree(head);
 }
+
 
 
 template <class T, class K>
@@ -407,7 +460,10 @@ T& AVL<T,K>::Get(const K key) {
     Node<T,K>* node = FindKey(head, key);
     return node->data;
 }
-
+template <class T, class K>
+T& AVL<T,K>::GetHeadMax() {
+    return head->max;
+}
 template <class T, class K>
 K& AVL<T,K>::getMaxKey(){
     Node<T, K> *node = FindMaxKey(head);
@@ -419,6 +475,7 @@ Node<T,K>* AVL<T,K>::GetNode(const K key) {
     Node<T,K>* node = FindKey(head, key);
     return node;
 }
+
 template <class T, class K>
 void AVL<T,K>::remove(const K key){
     Node<T,K>* erase = FindKey(head, key);
