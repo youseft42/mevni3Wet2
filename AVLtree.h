@@ -77,8 +77,8 @@ public:
 template <class T, class K>
 static void FixMax (Node<T,K>* root) {
     if(root){
-            T leftMax;
-            T rightMax;
+            T leftMax=root->max;
+            T rightMax=root->max;
             if (root->leftSon != NULL) {
                 leftMax = root->leftSon->max;
             }
@@ -119,7 +119,7 @@ static void Fixheight (Node<T,K>* root) {
 template <class T, class K>
 static void FixNewMax (Node<T,K>* root) {
     if(root){
-        T leftMax;
+        T leftMax=root->data;
         T rightMax=root->data;
         if (root->leftSon != NULL) {
             leftMax = root->leftSon->data;
