@@ -56,7 +56,11 @@ StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
         int newSuperPixel = pixels->find(pixel1);
         LabelFunction labelFunction;
         ScoreFunction scoreFunction;
-        labels[newSuperPixel].labelsBylabel->uniteTrees(labels[superPixel1].labelsBylabel,labels[superPixel2].labelsBylabel,labelFunction);
-        labels[newSuperPixel].labelsByScore->uniteTrees(labels[superPixel1].labelsByScore,labels[superPixel2].labelsByScore,scoreFunction);
+        labels[newSuperPixel].labelsBylabel->
+                uniteTrees(labels[superPixel1].labelsBylabel,
+                           labels[superPixel2].labelsBylabel,labelFunction);
+        labels[newSuperPixel].labelsByScore->
+                uniteTrees(labels[superPixel1].labelsByScore,
+                           labels[superPixel2].labelsByScore,scoreFunction);
         return  SUCCESS;
 }

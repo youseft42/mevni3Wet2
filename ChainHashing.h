@@ -95,8 +95,6 @@ void ChainHashing<T,K>::Delete(const K key) {
     int h = key % size;
     listArray[h].ListRemove(key);
     numOfElements--;
-    T tmpData;
-    K tmpKey;
     if ( (numOfElements == (size/4)) && (numOfElements > 12) ){
         List<T,K>* newTable = NewTable(listArray, size, size/2);
         delete[] listArray;

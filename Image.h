@@ -26,10 +26,10 @@ class Image{
     UnionFind* pixels;
     Labels* labels;
 public:
-    Image():labels(NULL),pixels(0),imageId(0){};
-    Image(int imageId,int pixel):imageId(imageId){
-        labels = new Labels[pixel];
+    Image() : imageId(0), pixels(0), labels(NULL){};
+    Image(int imageId,int pixel) : imageId(imageId){
         pixels =new UnionFind(pixel);
+        labels = new Labels[pixel];
     };
     ~Image()= default;
     void destroyImage(){
