@@ -8,6 +8,7 @@ class LabelBylabel {
 public:
     LabelBylabel():label(0),score(0){};
     LabelBylabel(int label,int score): label(label),score(score){};
+    ~LabelBylabel() = default;
     void updateScore(int score1){
         score=score1;
     }

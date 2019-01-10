@@ -177,25 +177,34 @@ static void ReverseInOrderAux(Node<T,K>* root, DoSomething &doSomething){
 
  template <class T,class Compare>
 static int merge1(T* a, int na, T* b, int nb, T* c,Compare& compare){
-    int ia, ib, ic;
+    int ia, ib, ic, counter=0;
     for(ia=ib=ic=0; (ia < na) && (ib < nb); ic++){
         if (compare(a[ia],b[ib])<0) {
             c[ic] = a[ia];
             ia++;
+            counter++;
         }
         else if (a[ia] == b[ib]){
             c[ic] = a[ia] + b[ib];
             ib++;
             ia++;
+            counter++;
         }
         else{
             c[ic] = b[ib];
             ib++;
+            counter++;
         }
     }
-    for(; ia < na; ia++, ic++) c[ic] = a[ia];
-    for(; ib < nb; ib++, ic++) c[ic] = b[ib];
-    return ic;
+    for(; ia < na; ia++, ic++){
+        c[ic] = a[ia];
+        counter++;
+    }
+    for(; ib < nb; ib++, ic++){
+        c[ic] = b[ib];
+        counter++;
+    }
+    return counter;
 };
 
 template <class T, class K>

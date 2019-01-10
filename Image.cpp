@@ -49,11 +49,14 @@ StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
         if(superPixel1==superPixel2) return FAILURE;
         pixels->merge(pixel1,pixel2);
         int newSuperPixel = pixels->find(pixel1);
+        AVL<LabelBylabel,int>* tree1 = labels[superPixel1].labelsBylabel;
+        AVL<LabelBylabel,int>* tree2 = labels[superPixel2].labelsBylabel;
+        AVL<LabelBylabel,int>* unitedTree = new AVL<LabelBylabel,int>;
         LabelFunction labelFunction;
         Compare compare;
-        labels[newSuperPixel].labelsBylabel->
-                uniteTrees(labels[superPixel1].labelsBylabel,
-                           labels[superPixel2].labelsBylabel,labelFunction,compare);
+        unitedTree->uniteTrees(tree1, tree2, labelFunction,compare);
+        delete labels[newSuperPixel].labelsBylabel;
+        labels[newSuperPixel].labelsBylabel = unitedTree;
         labels[newSuperPixel].labelsBylabel->FixTreeMax();
         return  SUCCESS;
 }
