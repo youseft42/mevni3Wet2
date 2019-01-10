@@ -60,15 +60,14 @@ public:
     }
 };
 
-template <class Filter, class T, class K>
+template < class T, class K>
 class Counter{
     int count;
-    Filter filter;
 public:
-    Counter(Filter& filter) : count(0), filter(filter){};
+    Counter() : count(0){};
     ~Counter() = default;
     void operator() (T& data, K& key){
-        if (filter(data)) count++;
+         count++;
     }
     int GetCounter(){
         return count;
@@ -155,6 +154,7 @@ public:
     void Insert (const T& data, const K& key);
     bool contains(const K key);
     void remove(const K key);
+    K& getMaxKey();
     T& Get(const K key);
     Node<T,K>* GetNode(const K key);
 
@@ -170,11 +170,11 @@ public:
     void BuildAlmostComplete(int size, Node<T,K>* dummy);
     template <class Function>
     void uniteTrees(AVL* tree1, AVL* tree2, Function& f){
-        Counter<Function, T, K> counter1(f);
+        Counter<T, K> counter1;
         tree1->InOrder(counter1);
-        Counter<Function, T, K> counter2(f);
+        Counter<T, K> counter2;
         tree2->InOrder(counter2);
-        PutInArray< T, K> putA1(counter1.GetCounter());
+        PutInArray<T, K> putA1(counter1.GetCounter());
         PutInArray<T, K> putA2(counter2.GetCounter());
         tree1->InOrder(putA1);
         tree2->InOrder(putA2);
@@ -346,6 +346,15 @@ static Node<T,K>* FindKey (Node<T,K>* root, K key) {
     return NULL;
 }
 
+template <class T, class K>
+static Node<T,K>* FindMaxKey(Node<T,K>* root){
+    Node<T,K>* tmp = root;
+    while (tmp->rightSon != NULL){
+        tmp = tmp->rightSon;
+    }
+    return tmp;
+};
+
 template <class T,class K>
 static Node<T,K>* InsertNode (Node<T,K>* root ,const T& data, const K& key) {
     Node<T,K>* temp;
@@ -396,6 +405,13 @@ T& AVL<T,K>::Get(const K key) {
     Node<T,K>* node = FindKey(head, key);
     return node->data;
 }
+
+template <class T, class K>
+K& AVL<T,K>::getMaxKey(){
+    Node<T,K>* node = FindMaxKey(head);
+    return node->data;
+};
+
 template <class T, class K>
 Node<T,K>* AVL<T,K>::GetNode(const K key) {
     Node<T,K>* node = FindKey(head, key);

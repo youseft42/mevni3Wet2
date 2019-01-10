@@ -37,10 +37,12 @@ public:
         label=labelBylabel.label;
         score=labelBylabel.score;
         indexInHeap=labelBylabel.indexInHeap;
+        return *this;
     }
     LabelBylabel& operator+(const LabelBylabel& labelBylabel){
         label=labelBylabel.label;
         score+=labelBylabel.score;
+        return *this;
     }
 };
 class LabelByScore{
@@ -69,6 +71,13 @@ public:
     LabelByScore& operator=(const LabelByScore& labelByScore){
         label=labelByScore.label;
         score=labelByScore.score;
+        return *this;
+
+    }
+    LabelByScore& operator+(const LabelByScore& labelByScore){
+        label=labelByScore.label;
+        score+=labelByScore.score;
+        return *this;
     }
 };
 

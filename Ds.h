@@ -10,15 +10,14 @@ class Ds{
 public:
     Ds(int pixels);
     ~Ds(){
-        class Distroy{
+        class Destroy{
         public:
-            void operator()(Image& image){
-                image.destroyImage();
+            void operator()(Image& image1){
+                image1.destroyImage();
             }
-
         };
-        Distroy distroy;
-        allImages.DoSomething(distroy);
+        Destroy destroy;
+        allImages.DoSomething(destroy);
     };
     StatusType AddImage(int imageID);
     StatusType DeleteImage(int imageID);

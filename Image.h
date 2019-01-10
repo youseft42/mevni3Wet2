@@ -9,11 +9,13 @@
 
 class Labels {
 public:
-    MaxHeap<LabelByScore>* labelsByScore;
+    int highestScoredLabel;
+    AVL<LabelByScore,LabelByScore>* labelsByScore;
     AVL<LabelBylabel,int>* labelsBylabel;
     Labels(){
-        labelsByScore = new MaxHeap<LabelByScore>(10);
+        labelsByScore = new AVL<LabelByScore,LabelByScore>;
         labelsBylabel = new AVL<LabelBylabel,int>;
+
     }
     ~Labels(){
         delete labelsByScore;
@@ -27,9 +29,9 @@ class Image{
 public:
     Image():labels(NULL),pixels(0),imageId(0){};
     Image(int imageId,int pixel):imageId(imageId){
-        pixels = new UnionFind(pixel);
         labels = new Labels[pixel];
-    }
+        pixels =new UnionFind(pixel);
+    };
     ~Image()= default;
     void destroyImage(){
         delete pixels;
