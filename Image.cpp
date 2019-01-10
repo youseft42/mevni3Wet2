@@ -36,22 +36,22 @@ StatusType Image::highestScoredLabel(int pixel, int *label){
     *label = labels[superPixel].highestScoredLabel;
     return SUCCESS;
 }
+class LabelFunction{
+public:
+    int operator()(LabelBylabel& labelBylabel){
+        return labelBylabel.getLabel();
+    }
+};
+class ScoreFunction{
+public:
+    LabelByScore& operator()(LabelByScore& labelByScore){
+        return labelByScore;
+    }
+};
 StatusType Image::mergeSuperPixels(int pixel1, int pixel2){
         int superPixel1=pixels->find(pixel1);
         int superPixel2=pixels->find(pixel2);
         if(superPixel1==superPixel2) return FAILURE;
-        class LabelFunction{
-        public:
-            int operator()(LabelBylabel& labelBylabel){
-                return labelBylabel.getLabel();
-            }
-        };
-        class ScoreFunction{
-        public:
-            LabelByScore& operator()(LabelByScore& labelByScore){
-                return labelByScore;
-            }
-        };
         pixels->merge(pixel1,pixel2);
         int newSuperPixel = pixels->find(pixel1);
         LabelFunction labelFunction;
