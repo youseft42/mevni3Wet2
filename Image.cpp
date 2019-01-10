@@ -20,13 +20,15 @@ StatusType Image::setLabelScore(int pixel,int label,int score)
 }
 
 StatusType Image::resetLabelScore(int pixel,int label)
-{   int superPixel =pixels->find(pixel);
+{
+    int superPixel =pixels->find(pixel);
     if(!(labels[superPixel].labelsBylabel->contains(label)))
         return FAILURE;
-    LabelByScore labelByScore(label, 0);
+    LabelByScore labelByScore(label, labels[superPixel].labelsBylabel->Get(label).getScore());
     labels[superPixel].labelsBylabel->remove(label);
     labels[superPixel].labelsByScore->remove(labelByScore);
-    labels[superPixel].highestScoredLabel = labels[superPixel].labelsByScore->getMaxKey().getLabel();
+    if (labels[superPixel].labelsByScore->GetSize() > 0)
+        labels[superPixel].highestScoredLabel = labels[superPixel].labelsByScore->getMaxKey().getLabel();
     return SUCCESS;
 }
 StatusType Image::highestScoredLabel(int pixel, int *label){
